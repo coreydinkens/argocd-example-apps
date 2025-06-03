@@ -2,9 +2,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: podinfo
-  namespace: argoapps
+  namespace: tanzu-helm-resources
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: podinfo
@@ -12,14 +12,8 @@ spec:
   project: default
   source:
     repoURL: "https://stefanprodan.github.io/podinfo"
-    targetRevision: "6.5.4"
+    targetRevision: "6.9.0"
     chart: podinfo
     helm:
       values: |
         replicaCount: 1
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
