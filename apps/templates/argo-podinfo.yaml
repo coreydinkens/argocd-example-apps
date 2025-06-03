@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: podinfo
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: podinfo
+    server: {{ .Values.spec.destination.server }}
+  project: default
+  source:
+    repoURL: "https://stefanprodan.github.io/podinfo"
+    targetRevision: "6.5.4"
+    chart: podinfo
+    helm:
+      values: |
+        replicaCount: 1
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
